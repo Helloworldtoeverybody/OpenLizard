@@ -8,7 +8,6 @@ import pyaudio
 
 
 
-
 class recognition:
 
     def __init__(self):
@@ -16,21 +15,46 @@ class recognition:
 
         self.mic = pyaudio.PyAudio()
 
-        self.stream = self.mic.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8192)
+        self.stream = self.mic.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8192, input_device_index=2)
         self.stream.start_stream()
 
-        self.model = Model("/root/Open_Lizard/vosk-model-small-ru-0.22")
+        # self.model = Model("/root/Open_Lizard/vosk-model-small-ru-0.22")
+        self.model = Model("vosk-model-small-en-us-0.15")
         self.recognizer = KaldiRecognizer(self.model, 16000)
 
 
 
+
+    key_words = ["alice", "jarvis", "lizard"]
+
+
+
+    def key_word(self, text):
+        text = text.lower()
+
+        if any(word in text for word in self.key_words):
+            return True
+
+
+
+
+
+
+
     def run(self):
-        data = self.stream.read(4096)
+        self.data = self.stream.read(4096, exception_on_overflow=False)
 
 
-        if self.recognizer.AcceptWaveform(data):
-            text = self.recognizer.Result()
-            print(text)
+        if self.recognizer.AcceptWaveform(self.data):
+            self.text = self.recognizer.Result()
+            print(self.text)
+
+
+            if self.key_word(self.text):
+                print("Activated!")
+
+
+        
 
     def find_microphone(self):
         
