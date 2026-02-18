@@ -2,12 +2,6 @@ from vosk import Model,KaldiRecognizer
 
 import pyaudio
 
-
-
-
-
-
-
 class recognition:
 
     def __init__(self):

@@ -6,20 +6,8 @@ from ollama_model.ollama_model import model
 model = model()
 
 
-
-
-
 rec = recognition()
-
-
 rec.find_microphone() # Lists all devices and microphones and their indexes
-
-
-
-
-
-
-
 
 
 while True:
@@ -31,9 +19,5 @@ while True:
 
         model.generate(rec.get_text())
         rec.activate_flag = 0
-
-
-
-
 
 
