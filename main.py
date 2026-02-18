@@ -6,7 +6,7 @@ from ollama_model.ollama_model import model
 model = model()
 
 
-model.generate("Hello")
+
 
 
 rec = recognition()
@@ -24,6 +24,16 @@ rec.find_microphone() # Lists all devices and microphones and their indexes
 
 while True:
     rec.run() # Run voice recognition!
+
+
+    if rec.activate_flag:
+   
+
+        model.generate(rec.get_text())
+        rec.activate_flag = 0
+
+
+
 
 
 

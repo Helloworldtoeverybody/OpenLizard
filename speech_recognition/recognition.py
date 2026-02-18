@@ -14,7 +14,9 @@ class recognition:
 
 
         self.mic = pyaudio.PyAudio()
-
+        self.output = None
+        self.activate_flag = 0
+   
         self.stream = self.mic.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8192, input_device_index=2)
         self.stream.start_stream()
 
@@ -34,6 +36,11 @@ class recognition:
 
         if any(word in text for word in self.key_words):
             return True
+        
+
+    def get_text(self):
+        return self.output
+
 
 
 
@@ -47,12 +54,14 @@ class recognition:
 
         if self.recognizer.AcceptWaveform(self.data):
             self.text = self.recognizer.Result()
-            print(self.text)
+            self.output = self.text.lower()
+            print(self.output)
 
 
             if self.key_word(self.text):
                 print("Activated!")
-
+                self.activate_flag = 1
+                
 
         
 

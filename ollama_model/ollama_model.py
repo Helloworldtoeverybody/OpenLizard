@@ -1,18 +1,19 @@
 import ollama
+from system_prompt import SYSTEM_PROMPT  # import the string
 
 class model:
     def __init__(self):
-        self.model = 'qwen2.5:0.5b' # Just type "ollama list" in terminal and choose a model you want from that list
+        self.model_name = "qwen2.5:0.5b"
+        self.system_prompt = SYSTEM_PROMPT  # THIS IS NOW A STRING
 
-
-    def generate(self, prompt):
-
-        self.result = ollama.generate(model= self.model, prompt=prompt) # Generating answer
-        print(self.result['response']) # "response" means print only answer, without any uneccesary information
-
-
-
-
-
-
-       
+    def generate(self, user_prompt):
+        response = ollama.chat(
+            model=self.model_name,
+            messages=[
+                {"role": "system", "content": self.system_prompt},
+                {"role": "user", "content": user_prompt}
+            ]
+        )
+        answer = response["message"]["content"]
+        print(answer)
+        return answer
